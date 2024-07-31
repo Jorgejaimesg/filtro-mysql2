@@ -658,13 +658,14 @@ SELECT cp.id_producto, SUM(cp.cantidad) AS cantidad,
 FROM compras_productos cp
 GROUP BY cp.id_producto, producto
 ORDER BY SUM(cp.cantidad) DESC
-LIMIT 2;
+LIMIT 5;
 
 +-------------+----------+----------------------+
 | id_producto | cantidad | producto             |
 +-------------+----------+----------------------+
 |           2 |        2 | Termo                |
 |           1 |        1 | Bicicleta de montaña |
+|           3 |        1 | Zapatos de running   |
 +-------------+----------+----------------------+
 
 ```
