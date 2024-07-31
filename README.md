@@ -589,3 +589,82 @@ WHERE cl.direccion LIKE '%Bikini%';
 |         1 | Bob    | Esponja   | Fondo de Bikini 123 |
 +-----------+--------+-----------+---------------------+
 ```
+### Subconsultas
+
+Consultar los productos que tienen un precio de venta superior al precio promedio de todos los productos
+
+```mysql
+SELECT p.nombre, p.precio_venta
+FROM productos p
+WHERE p.precio_venta > (
+    SELECT AVG(p.precio_venta)
+	FROM productos p);
+	
++----------------------+--------------+
+| nombre               | precio_venta |
++----------------------+--------------+
+| Bicicleta de montaña |     50000.00 |
+| Zapatos de running   |     80000.00 |
+| Gorra                |     50000.00 |
++----------------------+--------------+
+```
+
+Consultar los clientes que han gastado más del promedio general en sus compras
+
+```mysql
+SELECT cl.nombre, cl.apellidos, SUM(total) AS total
+FROM compras_productos cp
+JOIN compras c ON c.id_compra = cp.id_compra
+JOIN clientes cl ON cl.id = c.id_cliente
+GROUP BY cl.nombre, cl.apellidos
+HAVING SUM(total)>(
+    SELECT AVG(total)
+    FROM compras_productos cp
+)
+
++-----------+------------+----------+
+| nombre    | apellidos  | total    |
++-----------+------------+----------+
+| Bob       | Esponja    | 50000.00 |
+| Calamardo | Tentaculos | 80000.00 |
++-----------+------------+----------+
+```
+
+Consultar las categorías que tienen más de 5 productos
+
+```mysql
+SELECT (SELECT cg.descripcion 
+        FROM categorias cg
+        WHERE cg.id_categoria = p.id_categoria) AS categoria, 
+        COUNT(p.id_producto) AS productos
+FROM productos p
+GROUP BY categoria
+HAVING COUNT(p.id_producto) > 5;
+
++------------+-----------+
+| categoria  | productos |
++------------+-----------+
+| Accesorios |         2 |
++------------+-----------+
+```
+
+Consultar los productos más vendidos (top 5) por categoría
+
+```mysql
+SELECT cp.id_producto, SUM(cp.cantidad),
+(SELECT p.nombre                                     
+ FROM productos p                                         
+ WHERE p.id_producto = cp.id_producto) as producto
+FROM compras_productos cp
+GROUP BY cp.id_producto, producto
+ORDER BY SUM(cp.cantidad) DESC
+LIMIT 2;
+
++-------------+------------------+----------------------+
+| id_producto | SUM(cp.cantidad) | producto             |
++-------------+------------------+----------------------+
+|           2 |                2 | Termo                |
+|           1 |                1 | Bicicleta de montaña |
++-------------+------------------+----------------------+
+
+```
