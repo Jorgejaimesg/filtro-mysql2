@@ -668,3 +668,24 @@ LIMIT 2;
 +-------------+------------------+----------------------+
 
 ```
+
+Consultar los clientes que han realizado compras en los últimos 30 días
+
+```mysql
+SELECT cl.nombre, cl.apellidos
+FROM clientes cl
+WHERE cl.id IN (
+    SELECT c.id_cliente
+    FROM compras c
+    WHERE c.fecha >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+);
+
++-----------+------------+
+| nombre    | apellidos  |
++-----------+------------+
+| Bob       | Esponja    |
+| Patricio  | Estrella   |
+| Calamardo | Tentaculos |
++-----------+------------+
+```
+
