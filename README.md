@@ -651,7 +651,7 @@ HAVING COUNT(p.id_producto) > 5;
 Consultar los productos más vendidos (top 5) por categoría
 
 ```mysql
-SELECT cp.id_producto, SUM(cp.cantidad),
+SELECT cp.id_producto, SUM(cp.cantidad) AS cantidad,
 (SELECT p.nombre                                     
  FROM productos p                                         
  WHERE p.id_producto = cp.id_producto) as producto
@@ -660,12 +660,12 @@ GROUP BY cp.id_producto, producto
 ORDER BY SUM(cp.cantidad) DESC
 LIMIT 2;
 
-+-------------+------------------+----------------------+
-| id_producto | SUM(cp.cantidad) | producto             |
-+-------------+------------------+----------------------+
-|           2 |                2 | Termo                |
-|           1 |                1 | Bicicleta de montaña |
-+-------------+------------------+----------------------+
++-------------+----------+----------------------+
+| id_producto | cantidad | producto             |
++-------------+----------+----------------------+
+|           2 |        2 | Termo                |
+|           1 |        1 | Bicicleta de montaña |
++-------------+----------+----------------------+
 
 ```
 
