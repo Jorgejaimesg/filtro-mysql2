@@ -18,9 +18,9 @@ VALUES ('Bicicleta de montaña', 1, '111', 50000.00, 10, 1),
 
 
 INSERT INTO compras (id_cliente, fecha, medio_pago, comentario, estado)
-VALUES ('1', '2024-07-31 10:00:00', 'T', 'Compra de Bicicleta', 'A'),
-        ('2', '2024-07-31 11:00:00', 'E', 'Compra de accesorios', 'A'),
-        ('3', '2024-07-31 12:00:00', 'T', 'Compra de ropa deportiva', 'A');
+VALUES ('1', CURRENT(), 'T', 'Compra de Bicicleta', 'A'),
+        ('2', CURDATE(), 'E', 'Compra de accesorios', 'A'),
+        ('3', CURDATE(), 'T', 'Compra de ropa deportiva', 'A');
 
 
 INSERT INTO compras_productos (id_compra, id_producto, cantidad, total, estado)
