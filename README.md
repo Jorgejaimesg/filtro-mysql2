@@ -694,7 +694,7 @@ Consultar los productos que se han vendido menos de la cantidad promedio de prod
 vendidos
 
 ```mysql
-	SELECT P.id_producto, SUM(cp.cantidad)
+	SELECT P.id_producto,p.nombre, SUM(cp.cantidad) AS cantidad
 	from productos P
 	JOIN compras_productos cp ON cp.id_producto = p.id_producto
 	GROUP BY (p.id_producto)
@@ -702,9 +702,9 @@ vendidos
 	SELECT AVG(cantidad)
 	FROM compras_productos);
 	
-+-------------+------------------+
-| id_producto | SUM(cp.cantidad) |
-+-------------+------------------+
-|           2 |                2 |
-+-------------+------------------+
++-------------+--------+----------+
+| id_producto | nombre | cantidad |
++-------------+--------+----------+
+|           2 | Termo  |        2 |
++-------------+--------+----------+
 ```
